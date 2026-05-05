@@ -3,24 +3,25 @@ from bs4 import BeautifulSoup
 
 def scrape_website(url):
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0"
-        }
-
-        response = requests.get(url, headers=headers, timeout=10)
-
+        headers = {"User-Agent": "Mozilla/5.0"}
+        response = requests.get(url, headers=headers, timeout=15)
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # remove unwanted tags
-        for tag in soup(["script", "style"]):
+        for tag in soup(["script", "style", "noscript"]):
             tag.decompose()
 
-        text = soup.get_text(separator=" ")
+        title = soup.title.string.strip() if soup.title else "Website Bot"
+        text = " ".join(soup.get_text(separator=" ").split())
 
-        # clean text
-        clean_text = " ".join(text.split())
-
-        return clean_text[:10000]
+        return {
+            "title": title,
+            "content": text[:30000],
+            "pages": [url]
+        }
 
     except Exception as e:
-        return f"Error fetching website: {str(e)}"
+        return {
+            "title": "Website Bot",
+            "content": f"Error fetching website: {str(e)}",
+            "pages": [url]
+        }
