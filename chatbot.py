@@ -1,35 +1,35 @@
 import re
 
 def get_answer(question, content, website_url=""):
-    question = question.lower()
+    q = question.lower().strip()
 
-    if not content or "error fetching website" in content.lower():
-        return "Sorry, I could not fetch website content properly. Please try another website."
+    if q in ["hi", "hello", "hii", "hey"]:
+        return "Hello! I am your website assistant. You can ask me about courses, fees, admission, contact, or other website details."
 
-    if "website content could not be extracted" in content.lower():
-        return "This website is blocking content scanning. Please try another website."
+    if not content or len(content) < 50:
+        return "Website content was not scanned properly. Please generate chatbot again with another website URL."
+
+    # Direct keyword fallback for college/university website
+    keywords = ["aerospace", "b.tech", "btech", "engineering", "course", "courses", "admission", "fees", "contact"]
+
+    if any(k in q for k in keywords):
+        return content[:900]
 
     sentences = re.split(r"[.!?]", content)
+    words = [w for w in re.findall(r"\w+", q) if len(w) > 2]
 
-    best_sentences = []
-
-    question_words = question.split()
-
+    results = []
     for sentence in sentences:
-        sentence_lower = sentence.lower()
-        score = 0
-
-        for word in question_words:
-            if len(word) > 2 and word in sentence_lower:
-                score += 1
+        s = sentence.strip()
+        s_lower = s.lower()
+        score = sum(1 for word in words if word in s_lower)
 
         if score > 0:
-            best_sentences.append((score, sentence.strip()))
+            results.append((score, s))
 
-    best_sentences.sort(reverse=True, key=lambda x: x[0])
+    results.sort(reverse=True, key=lambda x: x[0])
 
-    if best_sentences:
-        answer = " ".join([s[1] for s in best_sentences[:3]])
-        return answer[:900]
+    if results:
+        return " ".join([r[1] for r in results[:4]])[:900]
 
-    return "Sorry, I could not find a relevant answer from the scanned website content."
+    return content[:900]
