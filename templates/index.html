@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>AutoBot Builder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -13,7 +11,6 @@
         <span class="logo">A</span>
         <span>AutoBot Builder</span>
     </div>
-    <a href="#generate" class="nav-btn">Create Bot</a>
 </nav>
 
 <section class="hero">
@@ -22,50 +19,27 @@
 
         <h1>Generate a chatbot for any website within minutes.</h1>
 
-        <p>
-            Enter a website URL. AutoBot scans website content,
-            creates a knowledge base, and launches a smart chatbot instantly.
-        </p>
+        <p>Enter a website URL and create chatbot instantly.</p>
 
-        <form id="generate" class="url-card" action="/generate" method="POST">
+        <!-- ✅ FIXED FORM -->
+        <form action="/generate" method="POST">
+            
             <label>Website URL</label>
 
             <div class="input-row">
-                <input type="text" name="url" placeholder="https://example.com" required>
+                <input 
+                    type="text" 
+                    name="url" 
+                    placeholder="https://example.com" 
+                    required
+                >
+
+                <!-- IMPORTANT -->
                 <button type="submit">Generate Chatbot</button>
             </div>
 
-            {% if error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
         </form>
 
-        <div class="stats">
-            <div>
-                <strong>5 Pages</strong>
-                <span>Auto Scan Demo</span>
-            </div>
-            <div>
-                <strong>Instant</strong>
-                <span>Bot Creation</span>
-            </div>
-            <div>
-                <strong>Free</strong>
-                <span>Final Year Project</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="preview-card">
-        <div class="preview-header">
-            <span></span><span></span><span></span>
-        </div>
-
-        <div class="chat-preview">
-            <div class="bot-msg">Hello! I am your website assistant.</div>
-            <div class="user-msg">What services are available?</div>
-            <div class="bot-msg wide">I will answer based on the scanned website content.</div>
-        </div>
     </div>
 </section>
 
