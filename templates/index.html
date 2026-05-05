@@ -1,23 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>AutoBot Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <section class="hero">
-        <div class="hero-content">
-            <h1>AutoBot Builder</h1>
-            <p>Generate chatbot for any website within minutes.</p>
 
-            <form action="/generate" method="POST" class="url-card">
-                <label>Enter Website URL</label>
-                <div class="input-row">
-                    <input type="text" name="url" placeholder="https://example.com" required>
-                    <button type="submit">Generate Chatbot</button>
-                </div>
-            </form>
+<nav class="navbar">
+    <div class="brand">
+        <span class="logo">A</span>
+        <span>AutoBot Builder</span>
+    </div>
+    <a href="#generate" class="nav-btn">Create Bot</a>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge">AI Website Chatbot Generator</div>
+
+        <h1>Generate a chatbot for any website within minutes.</h1>
+
+        <p>
+            Enter a website URL. AutoBot scans website content,
+            creates a knowledge base, and launches a smart chatbot instantly.
+        </p>
+
+        <form id="generate" class="url-card" action="/generate" method="POST">
+            <label>Website URL</label>
+
+            <div class="input-row">
+                <input type="text" name="url" placeholder="https://example.com" required>
+                <button type="submit">Generate Chatbot</button>
+            </div>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </form>
+
+        <div class="stats">
+            <div>
+                <strong>5 Pages</strong>
+                <span>Auto Scan Demo</span>
+            </div>
+            <div>
+                <strong>Instant</strong>
+                <span>Bot Creation</span>
+            </div>
+            <div>
+                <strong>Free</strong>
+                <span>Final Year Project</span>
+            </div>
         </div>
-    </section>
+    </div>
+
+    <div class="preview-card">
+        <div class="preview-header">
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="chat-preview">
+            <div class="bot-msg">Hello! I am your website assistant.</div>
+            <div class="user-msg">What services are available?</div>
+            <div class="bot-msg wide">I will answer based on the scanned website content.</div>
+        </div>
+    </div>
+</section>
+
 </body>
 </html>
