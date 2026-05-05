@@ -4,12 +4,11 @@ from chatbot import get_answer
 import uuid
 
 app = Flask(__name__)
-app.secret_key = "change-this-secret-key"
+app.secret_key = "autobot-secret-key"
 
-# Temporary in-memory storage for final-year demo
 BOT_STORE = {}
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
     return render_template("index.html")
 
@@ -18,7 +17,7 @@ def generate():
     website_url = request.form.get("url", "").strip()
 
     if not website_url:
-        return render_template("index.html", error="Please enter a website URL.")
+        return render_template("index.html", error="Please enter website URL")
 
     if not website_url.startswith(("http://", "https://")):
         website_url = "https://" + website_url
@@ -26,6 +25,7 @@ def generate():
     result = scrape_website(website_url)
 
     bot_id = str(uuid.uuid4())[:8]
+
     BOT_STORE[bot_id] = {
         "url": website_url,
         "title": result.get("title", "Website Bot"),
@@ -40,15 +40,23 @@ def generate():
 @app.route("/dashboard/<bot_id>")
 def dashboard(bot_id):
     bot = BOT_STORE.get(bot_id)
+
     if not bot:
         return redirect(url_for("home"))
 
     embed_code = f'<script src="https://yourdomain.com/widget.js" data-bot-id="{bot_id}"></script>'
-    return render_template("dashboard.html", bot=bot, bot_id=bot_id, embed_code=embed_code)
+
+    return render_template(
+        "dashboard.html",
+        bot=bot,
+        bot_id=bot_id,
+        embed_code=embed_code
+    )
 
 @app.route("/chatbot/<bot_id>")
 def chatbot_page(bot_id):
     bot = BOT_STORE.get(bot_id)
+
     if not bot:
         return redirect(url_for("home"))
 
@@ -57,10 +65,11 @@ def chatbot_page(bot_id):
 @app.route("/api/chat/<bot_id>", methods=["POST"])
 def chat(bot_id):
     bot = BOT_STORE.get(bot_id)
+
     if not bot:
         return jsonify({"answer": "Bot not found. Please generate chatbot again."})
 
-    data = request.get_json() or {}
+    data = request.get_json()
     question = data.get("question", "").strip()
 
     if not question:
@@ -78,6 +87,7 @@ def chat(bot_id):
 @app.route("/history/<bot_id>")
 def history(bot_id):
     bot = BOT_STORE.get(bot_id)
+
     if not bot:
         return redirect(url_for("home"))
 
