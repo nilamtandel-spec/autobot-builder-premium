@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AutoBot Builder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>AutoBot Builder</h1>
+            <p>Generate chatbot for any website within minutes.</p>
+
+            <form action="/generate" method="POST" class="url-card">
+                <label>Enter Website URL</label>
+                <div class="input-row">
+                    <input type="text" name="url" placeholder="https://example.com" required>
+                    <button type="submit">Generate Chatbot</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+</html>
