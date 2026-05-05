@@ -14,22 +14,23 @@ def scrape_website(url):
         for tag in soup(["script", "style", "noscript"]):
             tag.decompose()
 
-        title = soup.title.string.strip() if soup.title else "Website Bot"
-        text = " ".join(soup.get_text(separator=" ").split())
+        title = soup.title.string.strip() if soup.title and soup.title.string else "Website Bot"
 
-        # IMPORTANT: if website blocked
-        if len(text) < 200:
-            text = "Website content could not be extracted properly."
+        text = soup.get_text(separator=" ")
+        clean_text = " ".join(text.split())
+
+        if len(clean_text) < 100:
+            clean_text = "Website content could not be extracted properly."
 
         return {
             "title": title,
-            "content": text[:20000],
+            "content": clean_text[:30000],
             "pages": [url]
         }
 
     except Exception as e:
         return {
             "title": "Website Bot",
-            "content": f"Error: {str(e)}",
+            "content": f"Error fetching website: {str(e)}",
             "pages": [url]
         }
