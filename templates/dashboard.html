@@ -2,74 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AutoBot Builder - AI Website Chatbot Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="bg-orb orb-one"></div>
-    <div class="bg-orb orb-two"></div>
 
-    <nav class="navbar">
+<div class="dashboard-layout">
+
+    <aside class="sidebar">
         <div class="brand">
             <span class="logo">A</span>
-            <span>AutoBot Builder</span>
+            <span>AutoBot</span>
         </div>
-        <a class="nav-btn" href="#generate">Create Bot</a>
-    </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="badge">AI Website Chatbot Generator</div>
-            <h1>Generate a chatbot for any website within minutes.</h1>
-            <p>
-                Enter a website URL. AutoBot scans website content, creates a knowledge base,
-                and launches a smart chatbot instantly.
-            </p>
+        <a class="side-link active">Dashboard</a>
+        <a class="side-link" href="/chatbot/{{ bot_id }}">Open Chatbot</a>
+        <a class="side-link" href="/history/{{ bot_id }}">Chat History</a>
+        <a class="side-link" href="/">Create New Bot</a>
+    </aside>
 
-            <form id="generate" class="url-card" action="/generate" method="POST">
-                <label>Website URL</label>
-                <div class="input-row">
-                    <input type="text" name="url" placeholder="https://example.com" required>
-                    <button type="submit">Generate Chatbot</button>
-                </div>
-                {% if error %}
-                <p class="error">{{ error }}</p>
-                {% endif %}
-            </form>
+    <main class="main-panel">
+        <div class="topbar">
+            <div>
+                <p class="muted">Generated Bot</p>
+                <h1>{{ bot.title }}</h1>
+            </div>
 
-            <div class="stats">
-                <div><strong>5 Pages</strong><span>Auto Scan Demo</span></div>
-                <div><strong>Instant</strong><span>Bot Creation</span></div>
-                <div><strong>Free</strong><span>Final Year Project</span></div>
+            <a class="primary-link" href="/chatbot/{{ bot_id }}">Test Chatbot</a>
+        </div>
+
+        <div class="grid">
+            <div class="metric-card">
+                <span>Website</span>
+                <strong>{{ bot.url }}</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>Pages Scanned</span>
+                <strong>{{ bot.pages|length }}</strong>
+            </div>
+
+            <div class="metric-card">
+                <span>Knowledge Size</span>
+                <strong>{{ bot.content|length }} chars</strong>
             </div>
         </div>
 
-        <div class="preview-card">
-            <div class="preview-header">
-                <span></span><span></span><span></span>
-            </div>
-            <div class="chat-preview">
-                <div class="bot-msg">Hello! I am your website assistant.</div>
-                <div class="user-msg">What services are available?</div>
-                <div class="bot-msg wide">I will answer based on the scanned website content.</div>
-            </div>
-        </div>
-    </section>
+        <div class="panel-card">
+            <h2>Scanned Pages</h2>
 
-    <section class="features">
-        <div class="feature-card">
-            <h3>Auto Website Scanner</h3>
-            <p>Reads website pages and extracts useful text content.</p>
+            <ul class="page-list">
+                {% for page in bot.pages %}
+                    <li>{{ page }}</li>
+                {% endfor %}
+            </ul>
         </div>
-        <div class="feature-card">
-            <h3>Smart Answer Engine</h3>
-            <p>Matches user questions with website knowledge base.</p>
+
+        <div class="panel-card">
+            <h2>Embed Code</h2>
+            <p class="muted">Use this after deployment.</p>
+            <pre>{{ embed_code }}</pre>
         </div>
-        <div class="feature-card">
-            <h3>Embed Ready</h3>
-            <p>Generates chatbot embed script for future integration.</p>
-        </div>
-    </section>
+    </main>
+
+</div>
+
 </body>
 </html>
